@@ -26,3 +26,4 @@ These variables are used in custom templates
 | input_s_card_primary__color_on| #141414|
 | input_s_card_primary__color_off| rgba(var(--rgb-primary--color),0.8)|
 
+> Copy the files with the .jinja extension to the **/custom_templates** folder, and then run the service (action) **homeassistant.reload_custom_templates**
