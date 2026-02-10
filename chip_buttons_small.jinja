@@ -1,0 +1,23 @@
+ha-card {
+       --chip-background: none !important;
+       --chip-border-radius: 1000px;
+       --chip-height: {{chip_height_mobile|default(60)}}px;
+       --chip-spacing: {{chip_spacing_mobile|default(10)}}px;
+       margin-top: {{top|default(0)}}px;
+       --chip-font-size: 0em;
+     }
+     
+     @media (min-width: 1150px) {
+       ha-card {
+         --chip-height: {{chip_height|default(60)}}px;
+         --chip-spacing: {{chip_spacing|default(20)}}px;
+         --chip-font-size: 0.3em;
+       }
+     }
+     
+     @media (min-aspect-ratio: 1.001/1) and (max-aspect-ratio: 1000/1) and (max-width: 2300px), (min-aspect-ratio: 2.1/1) {
+       ha-card {
+         --chip-height: {{chip_height|default(60)}}px;
+         --chip-font-size: 0em;
+       }
+     }

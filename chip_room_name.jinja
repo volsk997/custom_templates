@@ -1,0 +1,10 @@
+    ha-card {
+          z-index: 1;
+          position: absolute !important;
+          bottom: {{states('input_number.s_thirdary_bottom')}}px;
+          left: {{states('input_number.s_thirdary_left')}}px;
+          --ha-card-border-width: 0;
+          background-color: rgba(var(--rgb-card-background-color),0);
+          --chip-background: none;
+          --chip-font-weight: normal; 
+          --chip-font-size: {{states('input_number.s_thirdary_text_size')}}px;

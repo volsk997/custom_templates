@@ -1,0 +1,21 @@
+ha-card > .chip-container {
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      --chip-height: {{states('input_number.s_info_icon_height')|int(0)}}px;
+      --chip-spacing: 0px;
+      margin-top: {{states('input_number.s_info_iconic_seconary_top_margin')|int(0)}}px;
+      margin-left: {{states('input_number.s_info_iconic_seconary_left_margin')|int(0) }}px;
+      margin-bottom: {{states('input_number.s_info_iconic_seconary_bottom_margin')|int(0) - 25}}px;
+      padding-bottom: 25px;
+    }
+    ha-card > .chip-container > * {
+      flex-shrink: 0;
+    }
+    ha-card {
+      background-color: transparent !important;
+      --chip-background: none !important;
+      --chip-font-weight: normal; 
+      --chip-font-size: {{states('input_number.s_info_iconic_seconary_chip_font_size')|int(0)}}px;
+      --primary-text-color: {{states('input_text.tsvet_shrifta_vtorostepennaia_informatsiia')}};
+      

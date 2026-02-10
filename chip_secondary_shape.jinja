@@ -1,0 +1,39 @@
+ha-card > .chip-container {
+      {% if position == 'absolute' %}
+      position: absolute;
+      bottom: 0px;
+      backdrop-filter: blur(6px);
+      {% else%}{% endif %}
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      {% if shadow == 'true' %}
+      text-shadow: 
+        0 0 4px rgba(var(--rgb-card-background-color), 0.5),
+        0 0 6px rgba(var(--rgb-card-background-color), 0.5),
+        0 0 8px rgba(var(--rgb-card-background-color), 0.5);
+      {% else %} {% endif %}
+      background: rgba(120,120,120,0.1);
+      border-radius: {{states('input_number.s_card_border_radius') |int(20)}}px;
+      overflow-y: hidden;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE и Edge */
+      --chip-background: none;
+      --chip-spacing: 0px;
+      --chip-border-radius: 100px;
+      --chip-height: {{chip_height | default(50) }}px; 
+      --chip-font-weight: {{font_weight | default ('bolder') }}; 
+      --chip-font-size: {{font_size | default('15')}}px; 
+      margin: 2px 10px 10px 10px;
+      --primary-text-color: {{text_color | default('initial')}}
+
+    }
+    ha-card > .chip-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    ha-card > .chip-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    ha-card > .chip-container > * {
+      flex-shrink: 0;
+    } 

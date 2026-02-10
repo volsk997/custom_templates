@@ -1,0 +1,30 @@
+    ha-card {
+      /* Стили ha-card */
+      position: fixed !important;
+      top: {{top}}px !important;
+      left: calc(50vw + var(--mdc-drawer-width, 0px)/2) !important;
+      transform: translateX(-50%) !important;
+      width: calc(90vw - var(--mdc-drawer-width, 0px)) !important;
+      max-width: 950px !important;
+      min-width: 450px !important;
+      height: calc(100% - 40px) !important;
+      z-index: 1 !important;
+      --chip-height: 60px;
+      --chip-spacing: 20px;
+      --chip-background: transparent !important;
+      --chip-icon-size: 35px; 
+      --chip-border-radius: 100px;
+      --chip-padding: 12px;
+      /* Визуальные стили ha-card */
+      background: rgba(0,0,0,0) !important;
+      padding: 0px 0px !important;
+      /* Анимация */
+      transition: all 0.3s ease !important;
+    }
+    /* Для макбука (соотношение ~1.91) */
+        @media (min-aspect-ratio: 1.5/1) and (max-aspect-ratio: 4/1) and (max-width:
+    2300px){
+      ha-card {
+        max-width: 600px !important;
+      }
+    }

@@ -1,0 +1,25 @@
+ha-card {
+
+               {% if stating == 'true' and config.entity and is_state(config.entity, state_on) %}
+                --chip-background: {{ background_color_on | default(states('input_text.s_card_background_on')) }};
+                --text-color: black;
+               {% else %}
+                --chip-background: {{color| default('transparent')}} {% if stating == 'true' %}!important{% endif %};
+               {% endif %}
+                 scale: {{scale | default(1) }};
+               
+              }
+              @media (pointer: fine) {
+              ha-card:hover {
+                --chip-background: 
+                  {% if hover == 'true' %}
+                    {% if config.entity and is_state(config.entity, state_on) and (stating == 'true') %}
+                      {{ background_color_on | default(states('input_text.s_card_background_on')) }};
+                    {% else %}
+                      {{ hover_color_off | default(states('input_text.s_card_background_off_hover')) }};
+                    {% endif %}
+                  {% else %}
+                    transparent;
+                  {% endif %}
+              }
+              }

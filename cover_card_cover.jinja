@@ -1,0 +1,26 @@
+ha-card {
+      {% if domain == 'media' %}
+        background: url('{{file}}') center no-repeat;
+        {% if  state_attr(entity, 'entity_picture') == None %}
+        {% else %} 
+        background: url( '{{ state_attr(entity, "entity_picture")|replace("400x400","1000x1000") }}') center no-repeat;
+        border-radius: {{states('input_number.s_card_border_radius')}}px;
+        overflow: hidden; /* важно для обрезки фона */
+        background-clip: padding-box;
+        {% endif %}
+      {% elif domain == 'light' %}
+        background: {{file}}
+        background-clip: padding-box;
+      {% else %}
+        background: url('{{file}}') center no-repeat;
+      {% endif %}
+        background-size: cover;
+        aspect-ratio: 1 / 1; 
+        border-radius: {{states('input_number.s_card_border_radius')}}px;
+        border: {{states('input_number.s_card_border_width')|int(0)}}px solid var(--ha-card-border-color, rgba(var(--rgb-primary-text-color),0.1)) !important;
+        {% if (state_on is defined and is_state(entity, state_on)) or (state_off is defined and not is_state(entity, state_off)) %}
+        {% else %}
+          #scale: 0.95 !important;
+          opacity: 0.4;
+        {% endif %}
+      }

@@ -1,0 +1,31 @@
+    ha-card { 
+        --stack-card-gap: 0px;
+         padding: {{padding | default('initial')}} !important;
+      {% if is_state(entity| default(''), state_on | default('')) %}
+      
+        background-color: {{ background_color_on | default(states('input_text.s_card_background_on'))}} ;
+        --primary-text-color: {{ primary_text_color | default(states('input_text.s_card_primary_text_color_on'))}};
+        
+      {% else %}
+      
+        background-color: {{ background_color_off | default(states('input_text.s_card_background_off'))}};
+        --primary-text-color: {{states('input_text.s_card_primary_text_color_off')}};
+        
+      {% endif %}
+        backdrop-filter: blur({{states('input_number.s_card_background_blur')|int(0)}}px) !important;
+        -webkit-backdrop-filter: blur({{states('input_number.s_card_background_blur')|int(0)}}px) !important; /* Для Safari */
+        border: {{states('input_number.s_card_border_width')|int(0)}}px solid var(--ha-card-border-color, rgba(var(--rgb-primary-text-color),0.1)) !important;
+        border-radius: {{states('input_number.s_card_border_radius') |int(20)}}px;
+
+    }
+    @media (pointer: fine) {
+    {% if hover == true %}
+    ha-card:hover { 
+      {% if is_state(entity| default(''), state_on | default('')) %}
+        background-color:  {{ hover_color_on | default(states('input_text.s_card_background_on'))}};
+      {% else %}
+        background-color: {{ hover_color_off | default(states('input_text.s_card_background_off_hover'))}};
+      {% endif %}
+    {% else %}
+    {% endif %}
+    }

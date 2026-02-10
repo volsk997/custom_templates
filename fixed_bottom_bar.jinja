@@ -1,0 +1,60 @@
+ha-card {
+        /* Стили ha-card */
+        position: fixed !important;
+        bottom: {{bottom | default(20) }}px !important;
+        left: calc(50vw + var(--mdc-drawer-width, 0px)/2) !important;
+        transform: translateX(-50%) !important;
+        width: max-content !important; /* Ключевое изменение */
+        max-width: none !important;
+        min-width: auto !important;
+        z-index: 1 !important;
+        overflow: hidden;
+        --chip-height: {{chip_height | default(60) }}px;
+        --chip-spacing: {{chip_spacing | default(20) }}px;
+        --chip-background: transparent;
+        --chip-icon-size: {{icon_size | default(35) }}px; 
+        --chip-border-radius: 100px;
+        --chip-padding: {{chip_padding | default(12) }}px;
+        /* Визуальные стили ha-card */
+        
+        
+        backdrop-filter:
+        blur({{states('input_number.s_card_background_blur')|int(0)}}px)
+        !important;
+        border: {{states('input_number.s_card_border_width')|int(0)}}px solid
+        var(--ha-card-border-color, rgba(var(--rgb-primary-text-color),0.1))
+        !important;
+        -webkit-backdrop-filter:
+        blur({{states('input_number.s_card_background_blur')|int(0)}}px)
+        !important; /* Для Safari */
+        border-radius: {{2 * states('input_number.s_card_border_radius') |int(20)}}px !important;
+        
+        #SOLID
+        #box-shadow: 0px 0px 50px 10px rgba(0, 0, 0, 0.2) !important;
+        #background-color: {{states('input_text.s_card_background_off')}};
+        
+        #GLASS
+        background-color: rgba(var(--rgb-card-background-color), 0.5) !important;
+        box-shadow: 
+          0 8px 8px rgba(0, 0, 0, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.5),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+          inset 0 0 40px 5px rgba(255, 255, 255, 0.05) !important;
+          
+        padding: 15px 20px !important;
+        --chip-font-size: 16px; 
+        {% if text == 'true'%}
+        text-shadow: 
+          0 0 4px rgba(var(--rgb-card-background-color), 1),
+          0 0 6px rgba(var(--rgb-card-background-color), 1),
+          0 0 8px rgba(var(--rgb-card-background-color), 1);
+        {% else %} {% endif %}
+        /* Выравнивание содержимого */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        /* Анимация */
+        transition: all 0.3s ease !important;
+         }        
+      

@@ -1,0 +1,165 @@
+################  Г Л А В Н А Я
+{% macro version() %} 1.0.25 (99F036)
+{% endmacro %}
+
+{% macro main1() %}
+{% set persons = [
+    {'id': 'person.stanislav', 'name': 'Станислав'},
+    {'id': 'person.melkaia', 'name': 'Мелкая'},
+    {'id': 'person.babulia', 'name': 'Бабуля'},
+    {'id': 'person.tioma', 'name': 'Тёма'},
+    {'id': 'person.iulka', 'name': 'Юлька'} ] %}
+{% for person in persons %}
+{%- if is_state(person.id, 'home') %}
+🏠 {{ person.name -}}
+{% endif -%}
+{% endfor %}
+
+{% if is_state('binary_sensor.zamok_indoor_contact', 'off')%}🔐 Входная дверь заперта изнутри 
+{% elif is_state('binary_sensor.vkhodnoi_zamok', 'off')%}🔒 Входная дверь заперта снаружи
+{% else %}🚪 Входная дверь не заперта
+{% endif %}
+🪟 Окон открыто: {{states('sensor.count_open_windows')}}
+🚪 Дверей открыто: {{states('sensor.count_open_doors')}}
+🔥 Климатических устройств вкл: {{states('sensor.count_climate_all')}}
+🔉 Медиаплееров вкл: {{states('sensor.count_media_all')}}
+🖥️ MacMini {% if is_state('binary_sensor.mac_mini_display', 'off') %}не активен{% else %}запущен, открыто приложение {{states('sensor.mac_mini_frontmost_app')}}{% endif %}
+💻 Macbook Air {% if is_state('binary_sensor.macbook_air_active', 'off') %}не активен{% else %}запущен, открыто приложение {{states('sensor.macbook_air_app')}} пользователем {{states('sensor.macbook_air_user')}}{% endif %}, 🔋заряд {{states('sensor.macbook_air_battery')}}%
+
+🌡️ Температура дома: {{states('sensor.temp_home')}}
+🌤️ Температура на улице: {{state_attr('weather.pogoda', 'temperature')|round(0) }}°, {{state_translated('weather.pogoda')}} (Яндекс)
+
+🚶🏻‍♂️ {% if is_state('binary_sensor.dvizhenie_v_kvartire', 'on') %}Движение появилось {% else %}Движение было {% endif %}{% set entity = 'binary_sensor.dvizhenie_v_kvartire' %}{% include 'last_changed_calc.jinja' %}
+
+💦 Протечка {{ state_translated('binary_sensor.water_all')|lower}}
+
+_Актуально на {%- set m = now().strftime('%m') | int -%}
+{%- set months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] %} {{ now().strftime('%-d') }} {{ months[m-1] }} {{ now().strftime('%Y, %H:%M') }} _
+{% endmacro %}
+
+################  Л Ю Д И 
+
+{% macro people_message() %}
+👨🏻 Станислав {%-if is_state('person.stanislav', 'home')%} дома 🏠{%-elif is_state('person.stanislav', 'not_home')%} находится по адресу {{state_attr('sensor.iphone_12_geocoded_location', 'Locality')}}, {{state_attr('sensor.iphone_12_geocoded_location', 'Thoroughfare')}}, {{state_attr('sensor.iphone_12_geocoded_location', 'Sub Thoroughfare')}}{%-else%} {{states('person.stanislav')[0]|lower}}{{states('person.stanislav')[1:]}}{%- endif %}
+👩🏻 Мелкая {%-if is_state('person.melkaia', 'home')%} дома 🏠{%-elif
+is_state('person.melkaia', 'not_home')%} находится по адресу {{state_attr('sensor.iphone_valeriia_geocoded_location', 'Locality' )}}, {{state_attr('sensor.iphone_valeriia_geocoded_location', 'Name' )}} {% elif states.person.melkaia.state == states.input_text.rabota_melkaia.state %} на работе  {% elif is_state('person.melkaia', 'Дом Мелкой') %} у Мамы{%- else %} {{states('person.melkaia')[0]|lower}}{{states('person.melkaia')[1:]}}{%- endif %}
+{%-if is_state('person.tioma', 'home')%}👥 Тёма дома {%- else %}{%- endif %}
+{%-if is_state('person.iulka', 'home')%}👥 Юлька дома {%- else %}{%- endif
+%}
+
+{% if states('sensor.iphone_15_pro_max_battery_level')|float(0) > 20 %}🔋 {% else %} 🪫 {%- endif -%}Заряд батареи Станислав (iPhone 15 Pro Max) *{{states('sensor.iphone_15_pro_max_battery_level')|int(0)}}%*
+{% if states('sensor.iphone_valeriia_battery_level')|float(0) > 20 %}🔋 {% else %} 🪫 {%- endif -%}Заряд батареи Мелкая (iPhone 12 Pro) *{{states('sensor.iphone_valeriia_battery_level')|int(0)}}%*
+
+Вес Станислава: {{states('sensor.ves_stanislav')|replace(".",",")}} кг
+Вес Мелкой: {{states('sensor.ves_melkaya')|replace(".",",")}} кг
+Вес Тёмы: {{states('sensor.ves_tim')|replace(".",",")}} кг
+{% endmacro %}
+
+
+################  Г И Р Л Я Н Д Ы 
+
+{% macro girliand_message() %}
+🪟 Гирлянда у окна {%if is_state('switch.girlyand_window', 'on')%}включена 🟡{% elif is_state('switch.girlyand_window', 'off')%}выключена 🔴{%else %}недоступна{% endif %}
+{% if is_state('input_boolean.kanun_novogo_goda', 'on') -%}
+📺 Гирлянда у ТВ {%if is_state('switch.girlyand_tv', 'on')%}включена 🟡{% elif is_state('switch.girlyand_tv', 'off')%}выключена 🔴{%else %}недоступна{% endif %}
+💻 Гирлянда у ПК {%if is_state('switch.girland_stol', 'on')%}включена 🟡{% elif is_state('switch.girland_stol', 'off')%}выключена 🔴{%else %}недоступна{% endif %}
+{% else %}
+{% endif %}
+{% endmacro %}
+
+################  К Н О П К И
+
+{% macro main() %}
+[[["🛋️ Гостиная ›","/gost"],["🪟 Балкон ›","/balk"],["🛁 Ванная ›","/van"]],[["🍽️ Кухня ›","/kuh"],["🚪 Прихожая ›","/prih"],["🏘️ Подъезд ›","/pod"]],[["👫🏻 Люди ›","/peop"],["⚙️ Система ›","/sys"],["📷 Камеры ›","/cam"]],[["🤖 Сценарии ›","/autos"],["🌥️ Погода ›","/weather"],["ℹ️ О боте ›","/info"]], [["🔄 Обновить","/start"]],[["❌ Удалить","/delete"]]]
+{% endmacro %}
+
+{% macro gost() %}
+[[["💡 Лампа", "/gost_light"], ["🌙 Луна", "/gost_moon"], ["💡 Ниша", "/gost_nisha"]], [["🎨 Акцент", "/gost_aktsent"], ["🕯️ Свечи", "/gost_svechi"], ["✨ Гирлянды ›", "/gost_girliand"]], [["🔉 Акустика", "/gost_akustika"], ["📺 AppleTV ›", "/gost_atv"], ["🔊 Станция ›", "/gost_station"]], [["💨 Кондиционер", "/gost_ac"], ["📷 Камера ›", "/gost_cam"]],[["◀️ Назад", "/start"], ["🔄 Обновить", "/gost"] ]]
+{% endmacro %}
+
+{% macro gost_girliand() %}
+{% set window_on = states('switch.girlyand_window') == 'on' %}
+{% set holiday_on = states('input_boolean.kanun_novogo_goda') == 'on' %}
+[
+[["🪟 У окна", "/gost_gir_window_toggle"]],
+{% if window_on %}
+[["1️⃣", "/gost_gir_mode_1"], ["2️⃣", "/gost_gir_mode_2"], ["3️⃣", "/gost_gir_mode_3"], ["4️⃣", "/gost_gir_mode_4"]],
+[["5️⃣", "/gost_gir_mode_5"], ["6️⃣", "/gost_gir_mode_6"], ["7️⃣", "/gost_gir_mode_7"], ["8️⃣", "/gost_gir_mode_8"]],
+{% endif %}
+{% if holiday_on %}
+[["💻 Гирлянда у ПК", "/gost_gir_mode_pc_toggle"]],
+[["📺 Гирлянда у ТВ", "/gost_gir_mode_tv_toggle"]],
+{% endif %}
+[["◀️ Назад", "/gost"], ["🔄 Обновить", "/gost_girliand"]]]
+{% endmacro %}
+
+{% macro kuh() %}
+[[["💡 Свет", "/kuh_light"]], [["🫖 Чайник", "/kuh_tea"]], [["🔊 Станция ›", "/kuh_station"]], [["📷 Камера ›", "/kuh_cam"]], [["◀️ Назад", "/start"], ["🔄 Обновить", "/kuh"] ]]
+{% endmacro %}
+
+{% macro van() %}
+[[["💡 Свет", "/van_light"]], [["🎏 Вытяжка", "/van_fan"]], [["🔊 Станция ›", "/van_station"]], [["◀️ Назад", "/start"], ["🔄 Обновить", "/van"] ]]
+{% endmacro %}
+
+{% macro balk() %}
+[[["💡 Свет", "/balk_light"]], [["🎛️ Тёплый пол", "/balk_pol"]], [["🔥 Конвектор", "/balk_konvektor"]], [["📷 Камера ›", "/balk_cam"]],[["◀️ Назад", "/start"], ["🔄 Обновить", "/balk"] ]]
+{% endmacro %}
+
+{% macro prih() %}
+[[["💡 Свет", "/prih_light"]], [["🔢 Домофон ›", "/prih_domofon"]], [["🔊 Станция ›", "/prih_station"]], [["📷 Камера ›", "/prih_cam"]], [["◀️ Назад", "/start"], ["🔄 Обновить", "/prih"] ]]
+{% endmacro %}
+
+{% macro pod() %}
+[[["💡 Свет", "/pod_light"]], [["📷 Камера ›", "/pod_cam"]],  [["◀️ Назад", "/start"], ["🔄 Обновить", "/pod"] ]]
+{% endmacro %}
+
+{% macro peop() %}
+[ [["📍 Станислав", "/geo_s"], ["📍 Мелкая", "/geo_m"]], [["◀️ Назад", "/start"], ["🔄 Обновить", "/peop"] ]]
+{% endmacro %}
+
+{% macro sys() %}
+[[["🔄 Рестарт HomeAssistant", "/restart_ha"]], [["🔄 Рестарт хоста", "/restart_host"]], [["‼️ Рестарт Yeelight","/restart_yeelight"]], [["⭕️ Выключить всё", "/turn_off_all"]], [["◀️ Назад", "/start"], ["🔄 Обновить", "/sys"],  ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro cams() %}
+[[["🛋️ Гостиная ›", "/gost_cam"], ["🍽️ Кухня ›", "/kuh_cam"]], [["🪟 Балкон ›", "/balk_cam"], ["🚪Прихожая ›", "/prih_cam"]], [["🏘️ Подъезд ›", "/pod_cam"]], [["◀️ Назад", "/start"]]]
+{% endmacro %}
+
+{% macro media_control(prefix, media_entity) %}
+[[["⏮️", "/{{ prefix }}_st_prev"], {% if is_state(media_entity, 'playing') %}["⏸️", "/{{ prefix }}_st_play"]{% else %}["▶️", "/{{ prefix }}_st_play"]{% endif %}, ["⏭️", "/{{ prefix }}_st_next"]], [["🔈➖", "/{{ prefix }}_st_minus"], ["🔈➕", "/{{ prefix }}_st_plus"]], [["◀️  Назад", "/{{ prefix }}"], ["🔄 Обновить", "/{{ prefix }}_station"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro atv() %}
+[[{% if is_state('media_player.gostinaia', 'standby') %}["🔘 Включить", "/gost_atv_on"]{% else %}["⭕️ Выключить", "/gost_atv_off"]{% endif %}], [["🔈➖", "/gost_atv_minus"], ["🔈➕", "/gost_atv_plus"]], [["◀️ Назад", "/gost"], ["🔄 Обновить", "/gost_atv"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro cam(prefix) %}
+[[["📸 Снимок", "/{{ prefix }}_cam_picture"]], [["👁️ Приватность", "/{{ prefix }}_cam_privacy"]], [["◀️ Назад", "/{{ prefix }}"],["◀️ Камеры","/cam"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro cam_lite(prefix) %}
+[[["📸 Снимок", "/{{ prefix }}_cam_picture"]], [["◀️ Назад", "/{{ prefix }}"],["◀️ Камеры","/cam"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro autos() %}
+[[["☀️ Доброе утро", "/good_morning"]], [["🌙 Спать", "/sleep"]], [["🔊 Включить музыку везде","/play_all"]], [["◀️ Назад", "/start"]]]
+{% endmacro %}
+
+{% macro prih_domofon() %}
+[[["Открыть 1 раз", "/prih_domofon_open_once"]],[["Открывать всегда", "/prih_domofon_a_open"],["Сбрасывать всегда", "/prih_domofon_a_close"]],[["◀️ Назад", "/prih"], ["🔄 Обновить", "/prih_domofon"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro good_morning() %}
+[[["▶️ Запустить", "/good_morning_start"]], [["◀️ Назад", "/autos"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro sleep() %}
+[[["▶️ Запустить", "/sleep_start"]], [["◀️ Назад", "/autos"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+{% macro play_all() %}
+[[["▶️ Запустить", "/play_all_start"]], [["◀️ Назад", "/autos"], ["🔼 Начало", "/start"]]]
+{% endmacro %}
+
+
+

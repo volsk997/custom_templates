@@ -1,0 +1,27 @@
+{% set last_triggered = states[entity].attributes.last_triggered %}
+{% if last_triggered is not none %}
+  {% set d = as_timestamp(last_triggered)| timestamp_custom('%-d') %}
+  {% set m = as_timestamp(last_triggered)| timestamp_custom('%m') %}
+  {% set y = as_timestamp(last_triggered)| timestamp_custom('%Y') %}
+  {% set time = as_timestamp(last_triggered)| timestamp_custom('%-H:%M') %}
+
+  {% set now_d = as_timestamp(now())| timestamp_custom('%-d') %}
+  {% set now_m = as_timestamp(now())| timestamp_custom('%m') %}
+  {% set now_y = as_timestamp(now())| timestamp_custom('%Y') %}
+
+  {%- set month_list = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] -%}
+  {%- set m_ok = as_timestamp(last_triggered) | timestamp_custom("%m") | int -%}
+  {%- set month = month_list[m_ok-1] -%}
+
+  {% if d == now_d and m == now_m and y == now_y %}
+    Сегодня в {{time}}
+  {% elif (as_timestamp(now()) - as_timestamp(last_triggered)) < 86400 and not (d == now_d and m == now_m and y == now_y) %}
+    Вчера в {{time}}
+  {% else %}
+    {{ d }} {{ month }}
+    {% if y != now_y %} {{ y }} {% endif %}
+    в {{time}}
+  {% endif %}
+{% else %}
+  Не срабатывал
+{% endif %}

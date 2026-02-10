@@ -1,0 +1,8 @@
+      span:{{type | default('after')}} {
+        content: '{{content}}';
+         display: flex;
+         padding-{% if type == 'before'%}bottom:0.2em {% else%}top:0.3em {% endif%}  ;
+         font-size: {{font_size | default(10)}}px;
+         color:{{color | default('var(--secondary-text-color)')}};
+         font-weight: normal; 
+         }

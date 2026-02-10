@@ -1,0 +1,20 @@
+ha-card {
+        --chip-background: none !important;
+        --chip-border-radius: 1000px;
+        --chip-height: {{chip_height_mobile | default(70)}}px;
+        --chip-spacing: {{chip_spacing|default(0)}}px;
+
+        margin: {{left| default(10)}}px 0px 0px;
+        }
+      @media (min-width: 1150px) {
+      ha-card {
+        --chip-height: {{chip_height | default(90)}}px;
+        margin: {{left| default(20)}}px {{space|default(150)}}px 0px  ;
+      }
+   /* Для макбука (соотношение ~1.91) */
+       @media (min-aspect-ratio: 1.001/1) and (max-aspect-ratio: 1000/1) and (max-width: 2300px), (min-aspect-ratio: 2.1/1) {
+         ha-card {
+           --chip-height: {{chip_height | default(80)}}px;
+           margin: {{left| default(0)}}px {{space|default(0)}}px 0px  ;
+         }
+       }

@@ -1,0 +1,98 @@
+ha-card {
+  /* Базовые стили */
+  position: fixed !important;
+  bottom: {{bottom | default(30)}}px !important;
+  left: calc(50vw + var(--mdc-drawer-width, 0px)/2) !important;
+  transform: translateX(-50%) !important;
+  width: calc(100% - 40px) !important;
+  z-index: 1 !important;
+  
+  /* Визуальные стили */
+  background: rgba(var(--rgb-card-background-color), 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--ha-card-border-color, rgba(var(--rgb-primary-text-color),0.1)) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 500px !important;
+  box-shadow: 0px 0px 50px 10px rgba(0, 0, 0, 0.2) !important;
+  padding: 15px 20px !important;
+  --chip-background: transparent !important;
+  --chip-border-radius: 100px;
+  
+  /* Выравнивание */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  
+  /* Анимация */
+  transition: all 0.3s ease !important;
+
+  /* Значения по умолчанию для ПК (1 кнопка) */
+  --chip-icon-size: 35px;
+  --chip-padding: 12px;
+  --chip-spacing: 20px;
+  --chip-height: 60px;
+  max-width: 93px !important;
+
+  /* Динамические значения для ПК */
+  {% if buttons == 2 %}
+    max-width: 183px !important;
+  {% elif buttons == 3 %}
+    max-width: 263px !important;
+  {% elif buttons == 4 %}
+    max-width: 343px !important;
+  {% elif buttons == 5 %}
+    max-width: 423px !important;
+  {% elif buttons == 6 %}
+    max-width: 503px !important;
+  {% elif buttons == 7 %}
+    max-width: 583px !important;
+  {% elif buttons == 8 %}
+    max-width: 663px !important;
+  {% elif buttons == 9 %}
+    max-width: 743px !important;
+  {% endif %}
+}
+
+@media (max-width: 1150px) {
+  ha-card {
+    /* Значения по умолчанию для телефона (1 кнопка) */
+    --chip-icon-size: 35px;
+    --chip-padding: 12px;
+    --chip-spacing: 20px;
+    --chip-height: 60px;
+    max-width: 95px !important;
+
+    /* Динамические значения для телефона */
+    {% if buttons == 2 %}
+      max-width: 190px !important;
+    {% elif buttons == 3 %}
+      max-width: 270px !important;
+    {% elif buttons == 4 %}
+      max-width: 345px !important;
+    {% elif buttons == 5 %}
+      max-width: 425px !important;
+    {% elif buttons == 6 %}
+      --chip-spacing: 9px;
+      max-width: 450px !important;
+    {% elif buttons == 7 %}
+      --chip-icon-size: 30px;
+      --chip-padding: 15px;
+      --chip-spacing: 3px;
+      --chip-height: 58px;
+      max-width: 485px !important;
+    {% elif buttons == 8 %}
+      --chip-icon-size: 30px;
+      --chip-padding: 5px;
+      --chip-spacing: 13px;
+      --chip-height: 43px;
+      max-width: 495px !important;
+    {% elif buttons == 9 %}
+      --chip-icon-size: 30px;
+      --chip-padding: 3px;
+      --chip-spacing: 14px;
+      --chip-height: 35px;
+      max-width: 495px !important;
+    {% endif %}
+  }
+}

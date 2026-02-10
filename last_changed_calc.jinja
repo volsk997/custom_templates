@@ -1,0 +1,37 @@
+{% set sec = states('sensor.every_sec_sensor') %}
+{%- if states(entity) in ['unknown', 'unavailable', 'none'] -%}
+Недоступно
+{%- else -%}
+{%- set time = (as_timestamp(now()) - as_timestamp(states[entity].last_changed))|int(0) -%}
+{%- set days = (time // 86400) -%}
+{%- set hours = (time % 86400) // 3600 -%}
+{%- set minutes = ((time % 86400) % 3600) // 60 -%}
+{%- set remaining_seconds = ((time % 86400) % 3600) % 60 -%}
+{%- if days > 370 -%}Более года назад
+{%- elif days > 185 -%}Более полугода назад
+{%- elif days > 95 -%}Более трёх месяцев назад
+{%- elif days > 62 -%}Более двух месяцев назад
+{%- elif days > 31 -%}Более месяца назад
+{%- elif days > 0 -%}{{ days|round(0)|format(morph='день', as_text=false) }} назад
+{%- elif hours > 0 -%}
+{%- set total_minutes = (time % 86400) // 60 -%}
+{%- if total_minutes >= 60 -%}
+{%- if total_minutes >= 90 -%}{{ (total_minutes // 60 + 1)|round(0)|format(morph='час', as_text=false) }} назад
+{%- else -%}{{ (total_minutes // 60)|round(0)|format(morph='час', as_text=false) }} назад
+{%- endif -%}
+{%- else -%}
+{%- if minutes >= 30 -%}{{ (hours + 1)|round(0)|format(morph='час', as_text=false) }} назад
+{%- else -%}{{ hours|round(0)|format(morph='час', as_text=false) }} назад
+{%- endif -%}
+{%- endif -%}
+{%- elif minutes > 0 -%}
+{%- if remaining_seconds >= 30 -%}{{ (minutes + 1)|round(0)|format(morph='минуту', as_text=false) }} назад
+{%- else -%}{{ minutes|round(0)|format(morph='минуту', as_text=false) }} назад
+{%- endif -%}
+{%- elif time >= 0 -%}
+{%- if time == 0 -%}Только что
+{%- else -%}{{ time|round(0)|format(morph='секунду', as_text=false) }} назад
+{%- endif -%}
+{%- else -%}Неизвестно
+{%- endif -%}
+{%- endif -%}

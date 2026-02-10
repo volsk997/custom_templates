@@ -1,0 +1,28 @@
+      .shape::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        border-radius: 50%; /* Круглая граница */ 
+           {% if states(config.entity) in ['on', 'active', 'playing'] %}
+           {% set minimum = 0 %}
+           {% set maxx = state_attr(timer, 'duration') | default('00:00:00') %}
+           {% set maximum = ((maxx.split(':')[0] | int(0)) * 60 * 60) + ((maxx.split(':')[1] | int(0)) * 60) %}
+           {% set sec = states('sensor.every_sec_sensor')|float(0) %}
+             {% set finishes_at = state_attr(timer, 'finishes_at') %}
+             {% set x = ((as_timestamp(finishes_at) if finishes_at is not none else as_timestamp(now())) - as_timestamp(now()))%}
+             {% set z = 100 * (x - minimum) / (maximum - minimum) | round(2) %}
+            {% else %}
+            {% endif %}
+        background: conic-gradient(
+          from 0deg,
+          transparent -100000%,
+          rgba({{color}}) {{z}}%,
+          rgba({{color2}}) 0%
+        );
+        mask: radial-gradient(
+          circle,
+          transparent calc(50% + 0.8px),
+          black calc(50% + 1px)

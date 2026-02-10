@@ -1,0 +1,23 @@
+ha-card {
+            --chip-icon-size: {{icon_size|default(0.8)}}em;
+            opacity: 0.9;
+          }
+
+          /* Active эффект для всех устройств */
+          {% if hover == 'true' %}
+          ha-card:active {
+            scale: 0.8;
+          }
+          {% endif %}
+
+          /* Стили только для ПК (устройств с точным курсором) */
+          @media (pointer: fine) {
+            ha-card {
+              opacity: 0.5;
+            }
+          {% if hover == 'true' %}
+            ha-card:hover {
+              opacity: 1;
+          {% endif %}
+            }
+          }

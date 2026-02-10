@@ -1,0 +1,10 @@
+{%- set g = state_attr('media_player.yandex_station_m00en2100jayck','media_position')|float(0)|round(0) -%}
+{%- set b = state_attr('media_player.yandex_station_beige','media_position')|float(0)|round(0) -%}
+{%- set p = state_attr('media_player.yandex_station_purple','media_position')|float(0)|round(0) -%}
+{%- set c = state_attr('media_player.yandex_station_cyan','media_position')|float(0)|round(0) -%}
+
+{% if is_state('binary_sensor.multirum_sostoianie','on')%} 
+{% set time = ([g, b, p, c]|max) -%} 
+{{as_timestamp(as_datetime(time))| timestamp_custom('%-M:%S') -}}
+{% else %} {{-as_timestamp(as_datetime(state_attr(entity,'media_position')))| timestamp_custom('%-M:%S') -}}
+{% endif %} 

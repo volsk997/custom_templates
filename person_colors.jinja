@@ -1,0 +1,16 @@
+{%- if is_state(entity, 'home')%}63,154,241 
+{%- elif is_state(entity, 'В Ситилинке')%}241,94,26
+{%- elif 'Вайл' in states(entity)%}176, 77, 227
+{%- elif is_state(entity, 'У Тёмы')%}76, 4, 191
+{%- elif is_state(entity, 'Дом Мелкой')%}255, 0,183
+{%- elif is_state(entity, 'В Пятёрочке')%}75,135,24
+{%- elif is_state(entity, 'В Ленте')%}12, 67, 148
+{%- elif is_state(entity, 'В отеле')%}67, 186, 87
+{%- elif is_state(entity, 'На мойке')%}189, 173, 30
+{%- elif is_state(entity, 'В Магните')%}222,51,20
+{%- elif is_state(entity, 'В деревне')%}82, 39,0
+{%- elif is_state(entity, 'В Малине')%}255, 46,95
+{%- elif is_state(entity, 'У крестницы')%}255, 170, 0
+
+{%- else -%} var(--rgb-disabled), 1
+{%- endif -%}

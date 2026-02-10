@@ -1,0 +1,20 @@
+      .shape::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        border-radius: 50%; /* Круглая граница */ 
+        background: conic-gradient(
+          from 0deg,
+          transparent -100000%,
+          rgba({{color | default ('var(--rgb-disabled), 1')}}) {{z | default( 100 * (( x | default(states(config.entity) | float(0)) ) - (minimum|default(1))) / ((maximum|default(100)) - (minimum|default(1))) | float(0) | round(2))}}%,
+          rgba({{color2 | default('0,0,0,0')}}) 0%
+        );
+        mask: radial-gradient(
+          circle,
+          transparent calc(50% + 0.8px),
+          black calc(50% + 1px)
+          
+          

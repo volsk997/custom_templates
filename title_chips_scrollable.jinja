@@ -1,0 +1,29 @@
+
+
+ha-card > .chip-container {
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE и Edge */
+      --chip-background: none;
+      --chip-spacing: 0px;
+      --chip-border-radius: 100px;
+      --chip-height: {{chip_height | default(50) }}px; 
+      --chip-font-weight: {{font_weight | default ('bolder') }}; 
+      --chip-font-size: {{font_size | default('15')}}px; 
+      margin-top: {{top| default(0) }}px;   
+      margin-bottom: {{bottom | default(0) }}px;  
+      --primary-text-color: {{text_color | default('initial')}}
+
+    }
+    ha-card > .chip-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    ha-card > .chip-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    ha-card > .chip-container > * {
+      flex-shrink: 0;
+    }
